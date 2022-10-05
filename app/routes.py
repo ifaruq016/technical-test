@@ -49,3 +49,9 @@ def topup():
 @token_required
 def payment():
     return transaction.payment()
+
+#TRANSFER
+@app.route('/transfer', methods=['POST'])
+@token_required
+def transfer():
+    return transaction.transfer()
