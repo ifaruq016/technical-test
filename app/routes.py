@@ -55,3 +55,9 @@ def payment():
 @token_required
 def transfer():
     return transaction.transfer()
+
+#REPORT TRANSACTION
+@app.route('/transactions', methods=['GET'])
+@token_required
+def report_transaction():
+    return transaction.report_transaction()

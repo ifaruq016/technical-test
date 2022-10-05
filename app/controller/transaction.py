@@ -172,3 +172,32 @@ def transfer():
     except Exception as e:
         print(e)
         return response.resp(500, 'Error', {})
+
+def report_transaction():
+    try:
+        token = request.headers['Authorization']
+        token = token.replace('Bearer ', '')
+
+        user_collection = db['users']
+
+        validation = helpers.validateToken(token)
+        if validation['status'] == '200' :
+            data_user = user_collection.find_one({"user_id" : validation['user_id']})
+            data_list = json.loads(dumps(data_user))
+
+            if data_user :
+                transaction_collection = db['transaction']
+                data_transaction = transaction_collection.find({"user_id" : validation['user_id']})
+                data_transaction_list = json.loads(dumps(data_transaction))
+                for item in data_transaction_list:
+                    del item["_id"]
+
+                return response.resp(200, 'Success', data_transaction_list)
+            else:
+                return response.resp(404, 'Data Not Found', {})
+        else:
+            return response.resp(401, 'Unauthenticated', {})
+
+    except Exception as e:
+        print(e)
+        return response.resp(500, 'Error', {})
