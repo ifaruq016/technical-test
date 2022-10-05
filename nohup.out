@@ -1,0 +1,8 @@
+[2022-10-05 12:21:48 +0700] [72755] [INFO] Starting gunicorn 20.1.0
+[2022-10-05 12:21:48 +0700] [72755] [INFO] Listening at: http://0.0.0.0:8000 (72755)
+[2022-10-05 12:21:48 +0700] [72755] [INFO] Using worker: sync
+[2022-10-05 12:21:48 +0700] [72758] [INFO] Booting worker with pid: 72758
+[2022-10-05 12:22:46 +0700] [72755] [WARNING] Worker with pid 72758 was terminated due to signal 9
+[2022-10-05 12:22:46 +0700] [72858] [INFO] Booting worker with pid: 72858
+[2022-10-05 12:23:01 +0700] [72858] [INFO] Parent changed, shutting down: <Worker 72858>
+[2022-10-05 12:23:01 +0700] [72858] [INFO] Worker exiting (pid: 72858)
