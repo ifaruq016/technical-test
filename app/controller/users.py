@@ -55,9 +55,48 @@ def login():
                     "refresh_token" : helpers.jwtEncode(data_list)
                 }
 
-                return response.resp(200, 'Phone Number already registered', json.loads(dumps(data_response)))
+                return response.resp(200, 'Success', json.loads(dumps(data_response)))
             else:
                 return response.resp(400, 'Phone number or pin not match', data_response)
+
+    except Exception as e:
+        print(e)
+        return response.resp(500, 'Error', {})
+
+def update_profile():
+    try:
+        token = request.headers['Authorization']
+        token = token.replace('Bearer ', '')
+
+        first_name = request.json['first_name']
+        last_name = request.json['last_name']
+        phone_number = request.json['phone_number']
+        address = request.json['address']
+
+        user_collection = db['users']
+
+        validation = helpers.validateToken(token)
+        if validation['status'] == '200' :
+            cursor = user_collection.find_one({"user_id" : validation['user_id']})
+            data_list = json.loads(dumps(cursor))
+
+            if cursor:
+                data_update = {
+                    "user_id" : validation['user_id'],
+                    "first_name" : first_name,
+                    "last_name" : last_name,
+                    "phone_number" : phone_number,
+                    "address" : address
+                }
+                update_data = user_collection.update_one({"user_id": validation['user_id']}, {"$set": data_update})
+                print(update_data)
+
+                return response.resp(200, 'Success', json.loads(dumps(data_update)))
+            else:
+                return response.resp(400, 'Data Not Found', {})
+
+
+        return response.resp(200, 'Success', {})
 
     except Exception as e:
         print(e)
