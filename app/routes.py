@@ -43,3 +43,9 @@ def profile():
 @token_required
 def topup():
     return transaction.topup()
+
+#PAYMENT
+@app.route('/pay', methods=['POST'])
+@token_required
+def payment():
+    return transaction.payment()
