@@ -9,14 +9,15 @@ def token_required(f):
     def decorated(*args, **kwargs):
         token = None
         # jwt is passed in the request header
-        if 'x-access-token' in request.headers:
-            token = request.headers['x-access-token']
+        if 'Authorization' in request.headers:
+            token = request.headers['Authorization']
+            token = token.replace('Bearer ', '')
         
         validation = helpers.validateToken(token)
         if validation['status'] != '200' :
             return response.resp(validation['status'], 'Something wrong')
         
-        return  f(validation['user_id'], *args, **kwargs)
+        return  f(*args, **kwargs)
   
     return decorated
 
@@ -29,3 +30,9 @@ def register():
 @app.route('/login', methods=['POST'])
 def login():
     return users.login()
+
+#UPDATE PROFILE
+@app.route('/profile', methods=['PUT'])
+@token_required
+def profile():
+    return users.update_profile()
