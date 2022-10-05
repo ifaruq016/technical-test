@@ -86,17 +86,17 @@ def payment():
                         "balance_after" : int(data_balance['balance']) - int(amount),
                         "created_date" : datetime.now()
                     }
-                    insert_data_top_up = transaction_collection.insert_one(data_insert_payment)
+                    insert_data_payment = transaction_collection.insert_one(data_insert_payment)
                     del data_insert_payment['_id']
 
-                    if insert_data_top_up:
+                    if insert_data_payment:
                         data_update_balance = {
                             "user_id" : validation['user_id'],
                             "balance" : data_insert_payment['balance_after']
                         }
                         update_data = balance_collection.update_one({"user_id": validation['user_id']}, {"$set": data_update_balance})
 
-                    return response.resp(200, 'Success', json.loads(dumps(data_insert_top_up)))
+                    return response.resp(200, 'Success', json.loads(dumps(data_insert_payment)))
                 else:
                     return response.resp(400, 'Balance Not Enough', {})
             else:
