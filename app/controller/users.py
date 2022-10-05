@@ -31,6 +31,14 @@ def register():
             }
             insert_data = user_collection.insert_one(data_insert)
             del data_insert['_id']
+            
+            # insert balance
+            balance_collection = db['balance']
+            data_insert_balance = {
+                "user_id" : id,
+                "balance" : 0
+            }
+            insert_data_balance = balance_collection.insert_one(data_insert_balance)
 
             return response.resp(200, 'Success', json.loads(dumps(data_insert)))
 
@@ -89,14 +97,12 @@ def update_profile():
                     "address" : address
                 }
                 update_data = user_collection.update_one({"user_id": validation['user_id']}, {"$set": data_update})
-                print(update_data)
 
                 return response.resp(200, 'Success', json.loads(dumps(data_update)))
             else:
-                return response.resp(400, 'Data Not Found', {})
-
-
-        return response.resp(200, 'Success', {})
+                return response.resp(404, 'Data Not Found', {})
+        else:
+            return response.resp(401, 'Unauthenticated', {})
 
     except Exception as e:
         print(e)

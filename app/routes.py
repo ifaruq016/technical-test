@@ -2,6 +2,7 @@ from app import app, helpers, response
 from flask import request, render_template, make_response
 from functools import wraps
 from app.controller import users
+from app.controller import transaction
 
 #middleware
 def token_required(f):
@@ -36,3 +37,9 @@ def login():
 @token_required
 def profile():
     return users.update_profile()
+
+#TOPUP
+@app.route('/topup', methods=['POST'])
+@token_required
+def topup():
+    return transaction.topup()
